@@ -1,25 +1,25 @@
 import React, { useContext } from "react";
 import "./Dashboard.css";
 import { Routes, Route, Link } from "react-router-dom";
-import { useConfigOrNull } from "./ConfigProvider";
+import { useConfigResult } from "./ConfigProvider";
 import { BackendSettingsContext } from "./BackendSettingsProvider";
 import BackendSettingsPage from "./BackendSettingsPage";
 
 const Dashboard = () => {
-    const config = useConfigOrNull();
+    const configResult = useConfigResult();
 
     const { backendSettings } = useContext(BackendSettingsContext);
 
-    if (config == null) {
-        return <div>Loading...</div>;
-    }
-    if (typeof config === "string") {
+    if (configResult.error) {
         return (
             <div>
-                <div>{config}</div>
+                <div>{configResult.error}</div>
                 <BackendSettingsPage />
             </div>
         );
+    }
+    if (configResult.config == null) {
+        return <div>Loading... {configResult.progress}</div>;
     }
     return (
         <div>

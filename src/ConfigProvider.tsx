@@ -10,14 +10,26 @@ export function globalSetDefaultBackendUrl(backendUrl: string) {
     DEFAULT_BACKEND_URL = backendUrl;
 }
 
-export const ConfigContext = createContext<BackendConfig | null | string>(null);
-export const useConfigOrNull = () => useContext<BackendConfig | null | string>(ConfigContext);
+class BackendConfigResult {
+    config: BackendConfig | null;
+    progress: string;
+    error: string | null;
+
+    constructor(config: BackendConfig | null, progress: string, error: string | null) {
+        this.config = config;
+        this.progress = progress;
+        this.error = error;
+    }
+}
+
+export const ConfigContext = createContext<BackendConfigResult>(new BackendConfigResult(null, "", null));
+export const useConfigResult = () => useContext<BackendConfigResult>(ConfigContext);
 export const useConfig = () => {
-    const value = useConfigOrNull();
-    if (value == null || typeof value === "string") {
+    const value = useConfigResult();
+    if (value.config == null) {
         throw new Error("Config not available");
     }
-    return value;
+    return value.config;
 };
 
 interface ConfigProviderProps {
@@ -25,30 +37,35 @@ interface ConfigProviderProps {
 }
 
 export const ConfigProvider = (props: ConfigProviderProps) => {
-    const [config, setConfig] = useState<BackendConfig | null | string>(null);
+    const [config, setConfig] = useState<BackendConfigResult>(new BackendConfigResult(null, "", null));
     const { backendSettings } = useContext(BackendSettingsContext);
 
     useEffect(() => {
         (async () => {
-            setConfig(`Connecting to ${backendSettings.backendUrl}`);
-            let responseErr = null;
+            const configUrl = backendSettings.backendUrl + "/config";
+            setConfig(new BackendConfigResult(null, `Connecting to ${configUrl}`, null));
             let responseBody = null;
             try {
                 const response = await backendFetch(backendSettings, "/config");
                 if (response.type === "opaque") {
-                    setConfig(`Failed to connect to ${backendSettings.backendUrl} due to CORS policy`);
+                    setConfig(
+                        new BackendConfigResult(null, "", `Failed to connect to ${configUrl} due to CORS policy`),
+                    );
                     return;
                 }
-                responseErr = response;
                 responseBody = await response.text();
                 const response_json = JSON.parse(responseBody);
-                setConfig(response_json.config);
-            } catch (_e) {
-                console.log("Error fetching config", responseErr);
+                if (!response_json["config"]) {
+                    setConfig(new BackendConfigResult(null, "", `No config field found on endpoint ${configUrl} `));
+                    return;
+                }
+                setConfig(new BackendConfigResult(response_json.config, "", null));
+            } catch (e) {
+                console.log("Error fetching config", e);
                 if (responseBody) {
                     console.log("Response body: ", responseBody);
                 }
-                setConfig(`Failed to connect to ${backendSettings.backendUrl}`);
+                setConfig(new BackendConfigResult(null, "", `Failed to connect to ${configUrl}`));
             }
         })();
     }, [setConfig, backendSettings]);
