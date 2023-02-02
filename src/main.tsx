@@ -2,22 +2,37 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Dashboard from "./Dashboard";
+import { ConfigProvider, FRONTEND_BASE, globalSetDefaultBackendUrl } from "./ConfigProvider";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-
-const FRONTEND_BASE = "/erc20/frontend/";
+import {BackendSettingsProvider} from "./BackendSettingsProvider";
 
 const rootEl = document.getElementById("root");
-if (rootEl) {
-    const root = ReactDOM.createRoot(rootEl);
-
-    root.render(
-        <React.StrictMode>
-            <BrowserRouter basename={FRONTEND_BASE}>
-                <Routes>
-                    <Route path="/*" element={<Dashboard />} />
-                </Routes>
-            </BrowserRouter>
-        </React.StrictMode>,
-    );
+if (!rootEl) {
+    throw new Error("No root element found");
 }
+const root = ReactDOM.createRoot(rootEl);
+
+interface FrontendConfig {
+    backendUrl: string;
+}
+
+fetch(`${FRONTEND_BASE}/config.json`).then((resp) => {
+    resp.json().then((config: FrontendConfig) => {
+        globalSetDefaultBackendUrl(config.backendUrl);
+
+        root.render(
+            <React.StrictMode>
+                <BackendSettingsProvider>
+                    <ConfigProvider>
+                        <BrowserRouter basename={FRONTEND_BASE}>
+                            <Routes>
+                                <Route path="/*" element={<Dashboard />} />
+                            </Routes>
+                        </BrowserRouter>
+                    </ConfigProvider>
+                </BackendSettingsProvider>
+            </React.StrictMode>,
+        );
+    });
+});

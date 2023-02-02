@@ -1,8 +1,26 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import "./Dashboard.css";
 import { Routes, Route, Link } from "react-router-dom";
+import {useConfigOrNull} from "./ConfigProvider";
+import { BackendSettingsContext } from "./BackendSettingsProvider";
+import BackendSettingsPage from "./BackendSettingsPage";
 
 const Dashboard = () => {
+    const config = useConfigOrNull();
+
+    const { backendSettings } = useContext(BackendSettingsContext);
+
+    if (config == null) {
+        return <div>Loading...</div>;
+    }
+    if (typeof config === "string") {
+        return (
+            <div>
+                <div>{config}</div>
+                <BackendSettingsPage />
+            </div>
+        );
+    }
     return (
         <div>
             <div>
