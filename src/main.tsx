@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 import { ConfigProvider, FRONTEND_BASE, globalSetDefaultBackendUrl } from "./ConfigProvider";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-import {BackendSettingsProvider} from "./BackendSettingsProvider";
+import { BackendSettingsProvider } from "./BackendSettingsProvider";
 
 const rootEl = document.getElementById("root");
 if (!rootEl) {
