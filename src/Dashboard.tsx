@@ -4,6 +4,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import { useConfigResult } from "./ConfigProvider";
 import { BackendSettingsContext } from "./BackendSettingsProvider";
 import BackendSettingsPage from "./BackendSettingsPage";
+import WelcomePage from "./WelcomePage";
 
 const Dashboard = () => {
     const configResult = useConfigResult();
@@ -34,7 +35,7 @@ const Dashboard = () => {
                 </div>
                 <div className="main-content">
                     <Routes>
-                        <Route path="/" element={<div>Main page</div>} />
+                        <Route path="/" element={<WelcomePage />} />
                         <Route path="page2" element={<div>Page 2</div>} />
                         <Route path="page3" element={<div>Page 3</div>} />
                     </Routes>

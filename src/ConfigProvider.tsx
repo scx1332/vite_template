@@ -4,7 +4,7 @@ import { BackendSettingsContext } from "./BackendSettingsProvider";
 import { backendFetch } from "./common/BackendCall";
 
 export let DEFAULT_BACKEND_URL = "";
-export const FRONTEND_BASE = "/template/";
+export const FRONTEND_BASE = "/frontend/";
 
 export function globalSetDefaultBackendUrl(backendUrl: string) {
     DEFAULT_BACKEND_URL = backendUrl;
@@ -24,13 +24,13 @@ class BackendConfigResult {
 
 export const ConfigContext = createContext<BackendConfigResult>(new BackendConfigResult(null, "", null));
 export const useConfigResult = () => useContext<BackendConfigResult>(ConfigContext);
-export const useConfig = () => {
+export function useBackendConfig(): BackendConfig {
     const value = useConfigResult();
     if (value.config == null) {
         throw new Error("Config not available");
     }
     return value.config;
-};
+}
 
 interface ConfigProviderProps {
     children: React.ReactNode;
