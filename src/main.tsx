@@ -17,7 +17,9 @@ interface FrontendConfig {
     backendUrl: string;
 }
 
-fetch(`${FRONTEND_BASE}/config.json`).then((resp) => {
+console.log("Fetching config.json");
+fetch(`${FRONTEND_BASE}config.json`).then((resp) => {
+    console.log("Got config.json");
     resp.json().then((config: FrontendConfig) => {
         globalSetDefaultBackendUrl(config.backendUrl);
 

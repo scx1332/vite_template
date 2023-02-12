@@ -9,6 +9,7 @@ export default defineConfig({
     },
     base: "/frontend/",
     build: {
+        outDir: "frontend",
         chunkSizeWarningLimit: 1500,
         rollupOptions: {
             output: {
