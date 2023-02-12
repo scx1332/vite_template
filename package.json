@@ -4,9 +4,6 @@
     "homepage": ".",
     "private": true,
     "dependencies": {
-        "@emotion/react": "^11.10.5",
-        "@emotion/styled": "^11.10.5",
-        "@mui/material": "^5.11.8",
         "luxon": "^3.0",
         "react": "^18.2",
         "react-dom": "^18.2",
