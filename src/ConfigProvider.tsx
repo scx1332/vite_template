@@ -3,13 +3,6 @@ import BackendConfig from "./common/BackendConfig";
 import { BackendSettingsContext } from "./BackendSettingsProvider";
 import { backendFetch } from "./common/BackendCall";
 
-export let DEFAULT_BACKEND_URL = "";
-export const FRONTEND_BASE = "/frontend/";
-
-export function globalSetDefaultBackendUrl(backendUrl: string) {
-    DEFAULT_BACKEND_URL = backendUrl;
-}
-
 class BackendConfigResult {
     config: BackendConfig | null;
     progress: string;

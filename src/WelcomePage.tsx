@@ -2,18 +2,31 @@ import React, { useContext } from "react";
 import "./WelcomePage.css";
 import { BackendSettingsContext } from "./BackendSettingsProvider";
 import { useBackendConfig } from "./ConfigProvider";
+import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body1,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+}));
 
 const WelcomePage = () => {
     const { backendSettings } = useContext(BackendSettingsContext);
     const config = useBackendConfig();
 
     return (
-        <div className="welcome-page">
-            <h1>Vite template</h1>
-            <p>Connected to the endpoint {backendSettings.backendUrl}</p>
-            <p>Frontend version {APP_VERSION}</p>
-            <p>Backend version {config.version}</p>
-        </div>
+        <Item>
+            <Stack spacing={2}>
+                <Item>Vite template</Item>
+                <Item>Connected to the endpoint {backendSettings.backendUrl}</Item>
+                <Item>Frontend version {APP_VERSION}</Item>
+                <Item>Backend version {config.version}</Item>
+            </Stack>
+        </Item>
     );
 };
 
