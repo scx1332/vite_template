@@ -1,15 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./Dashboard.css";
 import { Routes, Route, Link } from "react-router-dom";
 import { useConfigResult } from "./ConfigProvider";
-import { BackendSettingsContext } from "./BackendSettingsProvider";
 import BackendSettingsPage from "./BackendSettingsPage";
 import WelcomePage from "./WelcomePage";
 
 const Dashboard = () => {
     const configResult = useConfigResult();
-
-    const { backendSettings } = useContext(BackendSettingsContext);
 
     if (configResult.error) {
         return (
