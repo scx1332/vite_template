@@ -2,13 +2,15 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
 const FRONTEND_BASE = process.env.FRONTEND_BASE_ENV || "/frontend/";
+const DEFAULT_BACKEND_URL = process.env.DEFAULT_BACKEND_URL_ENV || "http://127.0.0.1:8080/api";
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
     define: {
         APP_VERSION: JSON.stringify(process.env.npm_package_version),
-        FRONTEND_BASE: JSON.stringify(FRONTEND_BASE)
+        FRONTEND_BASE: JSON.stringify(FRONTEND_BASE),
+        DEFAULT_BACKEND_URL: JSON.stringify(DEFAULT_BACKEND_URL),
     },
     base: FRONTEND_BASE,
     build: {
