@@ -18,7 +18,8 @@ if (FRONTEND_BASE != "/" && !baseUri.includes(FRONTEND_BASE)) {
     root.render(
         <div>
             <p>Invalid base URI, navigate to {FRONTEND_BASE}</p>
-        </div>);
+        </div>,
+    );
 } else {
     root.render(
         <React.StrictMode>
