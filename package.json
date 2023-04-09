@@ -5,10 +5,12 @@
     "private": true,
     "dependencies": {
         "luxon": "^3.0",
+        "plotly.js": "^2.20.0",
         "react": "^18.2",
         "react-dom": "^18.2",
         "react-icons": "^4.7",
         "react-loading-icons": "^1.1",
+        "react-plotly.js": "^2.6.0",
         "react-router": "^6.3",
         "react-router-dom": "^6.3"
     },
